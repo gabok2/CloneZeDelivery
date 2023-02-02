@@ -3,6 +3,7 @@ export declare global {
     interface RootParamList {
       Home: undefined;
       ItensSacola: undefined;
+      Sacola: undefined;
       Detalhes:
         {
           id: string;

@@ -1,6 +1,5 @@
 import { Container, ContainerFlatlist, Titulo } from "./styles";
-import { useState, useEffect } from "react";
-import firestore from '@react-native-firebase/firestore';
+
 import { FlatList } from "react-native";
 import { Card } from "../../../../components/Card";
 import { useNavigation } from "@react-navigation/native";
@@ -13,13 +12,13 @@ interface CervejasProps {
   preço: number;
 }
 
-interface LoadingProps {
-
-  handleLoading: (isLoading: boolean) => void;
+interface DateProps {
+  cervejas: CervejasProps[];
 }
 
-export function Cervejas({ handleLoading }: LoadingProps) {
-  const [cerveja, setCerveja] = useState<CervejasProps[]>([]);
+
+export function Cervejas({ cervejas }: DateProps) {
+
 
   const navigation = useNavigation();
 
@@ -33,22 +32,7 @@ export function Cervejas({ handleLoading }: LoadingProps) {
     })
   }
 
-  useEffect(() => {
-    firestore()
-      .collection('cervejas')
 
-      .get()
-      .then(response => {
-        handleLoading(false)
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as CervejasProps[];
-        setCerveja(data)
-      });
-  }, []);
 
   return (
     <Container>
@@ -56,11 +40,12 @@ export function Cervejas({ handleLoading }: LoadingProps) {
         <Titulo>CERVEJAS</Titulo>
 
         <FlatList
-          data={cerveja}
+          data={cervejas}
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <Card
+              id={item.id}
               key={item.id}
               imagem={item.imagem}
               titulo={item.titulo}

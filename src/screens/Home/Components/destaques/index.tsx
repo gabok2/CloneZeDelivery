@@ -11,30 +11,17 @@ interface OnBoardingItemProps {
   imagem: string;
 }
 
-interface LoadingProps {
-
-  handleLoading: (isLoading: boolean) => void;
+interface DestaquesProps {
+  destaques: OnBoardingItemProps[];
 }
-export function Destaques({ handleLoading }: LoadingProps) {
-  const [images, setImages] = useState<OnBoardingItemProps[]>([]);
+
+
+export function Destaques({ destaques }: DestaquesProps) {
+
   const [activeIndex, setActiveIndex] = useState(0);
 
 
-  useEffect(() => {
-    firestore()
-      .collection('destaques')
-      .get()
-      .then(response => {
-        handleLoading(false)
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as OnBoardingItemProps[];
-        setImages(data)
-      });
-  }, []);
+
 
   return (
     <>
@@ -44,33 +31,22 @@ export function Destaques({ handleLoading }: LoadingProps) {
         onMomentumScrollEnd={(event) => {
           setActiveIndex(event.nativeEvent.contentOffset.x / event.nativeEvent.layoutMeasurement.width)
         }}
-        data={images}
+        data={destaques}
         pagingEnabled
         keyExtractor={item => item.imagem}
         renderItem={({ item }) => (
           <Imagem
             url={item.imagem}
-
           />
-
-
-
-
-
         )}
         horizontal
         showsHorizontalScrollIndicator={false}
-
-
       />
-
-
-
       {
-        images.length > 1 ?
+        destaques.length > 1 ?
 
           <View style={styles.dotsContainer}>
-            {images.map((_, index) => (
+            {destaques.map((_, index) => (
               <View
                 key={index}
                 style={[styles.dot, { backgroundColor: index === activeIndex ? "#ffc400" : "#b3b2b2eb", }]}
@@ -81,11 +57,7 @@ export function Destaques({ handleLoading }: LoadingProps) {
           : null
       }
 
-
-
     </>
-
-
 
   );
 }

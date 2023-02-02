@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+
 import { Container, Titulo, Imagem } from "./styles";
-import firestore from '@react-native-firebase/firestore';
+
 import { FlatList } from "react-native";
 
 interface BannerProps {
@@ -8,30 +8,11 @@ interface BannerProps {
   imagem: string;
 }
 
-interface LoadingProps {
-
-  handleLoading: (isLoading: boolean) => void;
+interface DateProps {
+  banner: BannerProps[];
 }
 
-export function Banner({ handleLoading }: LoadingProps) {
-  const [banner, setBanner] = useState<BannerProps[]>([]);
-
-  useEffect(() => {
-    firestore()
-      .collection('banner')
-
-      .get()
-      .then(response => {
-        handleLoading(false)
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as BannerProps[];
-        setBanner(data)
-      });
-  }, []);
+export function Banner({ banner }: DateProps) {
 
   return (
     <Container>

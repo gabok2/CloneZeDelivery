@@ -14,13 +14,11 @@ interface PromoçãoProps {
 
 }
 
-interface LoadingProps {
-
-  handleLoading: (isLoading: boolean) => void;
+interface DateProps {
+  promoções?: PromoçãoProps[];
 }
 
-export function Promoções({ handleLoading }: LoadingProps) {
-  const [promoção, setPromoção] = useState<PromoçãoProps[]>([]);
+export function Promoções({ promoções }: DateProps) {
 
   const navigation = useNavigation();
 
@@ -32,32 +30,19 @@ export function Promoções({ handleLoading }: LoadingProps) {
       titulo: promoção.titulo,
     })
   }
-  useEffect(() => {
-    firestore()
-      .collection('Promoções_Relâmpago')
-      .get()
-      .then(response => {
-        handleLoading(false);
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as PromoçãoProps[];
-        setPromoção(data)
-      });
-  }, []);
+
   return (
     <>
       <Container>
         <ContainerFlatlist>
           <Titulo>⚡️ PROMOÇÕES RELÂMPAGO</Titulo>
           <FlatList
-            data={promoção}
+            data={promoções}
             keyExtractor={item => item.id}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <Card
+                id={item.id}
                 key={item.id}
                 imagem={item.imagem}
                 titulo={item.titulo}

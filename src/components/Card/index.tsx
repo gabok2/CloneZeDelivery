@@ -4,33 +4,23 @@ import { Container, Image, Preço, Title, Button, ContainerGroup, Order } from "
 import { useCart } from "../../hooks/useCart";
 import { Loading } from "../Loading";
 import { ModalItens } from "../ModalItens";
-import { useState } from "react";
-
-
-
+import { useEffect, useState } from "react";
 interface CardProps {
+  id: string;
   imagem: string;
   titulo: string;
   preço: number;
+  semButton?: boolean;
   button: () => void;
-
-
-
 }
 
+export function Card({ imagem, titulo, preço, button, id, semButton }: CardProps) {
+  const { visible } = useCart();
+  const [localVisible, setLocalVisible] = useState(visible);
 
-export function Card({ imagem, titulo, preço, button }: CardProps) {
-  const { loading } = useCart()
-  const [modalVisible, setModalVisible] = useState(false);
-
-  function OpenModal() {
-    setModalVisible(true)
-  }
-
-  function CloseModal() {
-    setModalVisible(false)
-  }
-
+  useEffect(() => {
+    setLocalVisible(visible);
+  }, [visible])
   return (
     <>
       <Container
@@ -46,12 +36,16 @@ export function Card({ imagem, titulo, preço, button }: CardProps) {
         </Order>
         <ContainerGroup>
           <Preço> {FormatPrice(preço)}</Preço>
-          <Button
-
-          >
-            <Feather name="plus" size={17} color="#000000" />
-          </Button>
+          {
+            !semButton ? <Button
+              onPress={() => setLocalVisible(true)}
+            >
+              <Feather name="plus" size={17} color="#000000" />
+            </Button>
+              : <></>
+          }
         </ContainerGroup>
+        <ModalItens preço={preço} imagem={imagem} id={id} titulo={titulo} visible={localVisible} onClose={() => setLocalVisible(false)} />
       </Container>
 
     </>

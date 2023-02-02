@@ -18,9 +18,10 @@ padding-right: 10px;
 
 export const Titulo = styled.Text`
   margin-bottom: 10px;
-  font-size: 13px;
+  font-size: 16px;
   color: #a4a4a4;
   margin-left:5px;
   margin-top: 10px;
+  
 `
 

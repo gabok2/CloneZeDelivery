@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
+import { HomeProps } from '../screens/Home';
+import { SacolaProps } from '../screens/Sacola';
 
 interface CartItem {
   id?: string;
@@ -11,9 +13,39 @@ interface CartItem {
 
 interface CartContextData {
   loading: boolean;
+  setLoading: (loading: boolean) => void;
   size: number;
   total: number;
   addProductToCart: (product: CartItem) => void;
+  visible: boolean;
+  setVisible: (visible: boolean) => void;
+
+  recomendados: HomeProps[];
+  setRecomendados: (recomendados: HomeProps[]) => void;
+  cervejas: HomeProps[];
+  setCervejas: (cervejas: HomeProps[]) => void;
+  destilados: HomeProps[];
+  setDestilados: (destilados: HomeProps[]) => void;
+
+  não_alcoòlicos: HomeProps[];
+  setNão_alcoòlicos: (não_alcoòlicos: HomeProps[]) => void;
+
+  vinhos: HomeProps[];
+  setVinhos: (vinhos: HomeProps[]) => void;
+  comidinhas: HomeProps[];
+  setComidinhas: (comidinhas: HomeProps[]) => void;
+  promoções: HomeProps[];
+  setPromoções: (promoções: HomeProps[]) => void;
+  retornavel: HomeProps[];
+  setRetornavel: (retornavel: HomeProps[]) => void;
+  categorias: HomeProps[];
+  setCategorias: (categorias: HomeProps[]) => void;
+
+  sacola: SacolaProps[];
+  setSacola: (sacola: SacolaProps[]) => void;
+
+
+
 
 }
 
@@ -27,6 +59,19 @@ export function CartProvider({ children }: CartProviderProps) {
   const [loading, setLoading] = useState(true);
   const [size, setSize] = useState(0);
   const [total, setTotal] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const [recomendados, setRecomendados] = useState<HomeProps[]>([]);
+  const [cervejas, setCervejas] = useState<HomeProps[]>([]);
+  const [destilados, setDestilados] = useState<HomeProps[]>([]);
+  const [não_alcoòlicos, setNão_alcoòlicos] = useState<HomeProps[]>([]);
+  const [vinhos, setVinhos] = useState<HomeProps[]>([]);
+  const [comidinhas, setComidinhas] = useState<HomeProps[]>([]);
+  const [promoções, setPromoções] = useState<HomeProps[]>([]);
+  const [retornavel, setRetornavel] = useState<HomeProps[]>([]);
+  const [categorias, setCategorias] = useState<HomeProps[]>([]);
+  const [sacola, setSacola] = useState<SacolaProps[]>([]);
+
+
 
 
 
@@ -99,9 +144,34 @@ export function CartProvider({ children }: CartProviderProps) {
     <CartContext.Provider
       value={{
         loading,
+        setLoading,
         size,
         total,
         addProductToCart,
+        visible,
+        setVisible,
+        recomendados,
+        setRecomendados,
+        cervejas,
+        setCervejas,
+        destilados,
+        setDestilados,
+        não_alcoòlicos,
+        setNão_alcoòlicos,
+        vinhos,
+        setVinhos,
+        comidinhas,
+        setComidinhas,
+        promoções,
+        setPromoções,
+        retornavel,
+        setRetornavel,
+        categorias,
+        setCategorias,
+        sacola,
+        setSacola,
+
+
 
       }}
     >

@@ -14,13 +14,12 @@ interface VinhosProps {
 
 }
 
-interface LoadingProps {
-
-  handleLoading: (isLoading: boolean) => void;
+interface DateProps {
+  vinhos: VinhosProps[];
 }
 
-export function Vinhos({ handleLoading }: LoadingProps) {
-  const [vinhos, setVinhos] = useState<VinhosProps[]>([]);
+export function Vinhos({ vinhos }: DateProps) {
+
 
   const navigation = useNavigation();
 
@@ -34,22 +33,7 @@ export function Vinhos({ handleLoading }: LoadingProps) {
     })
   }
 
-  useEffect(() => {
-    firestore()
-      .collection('vinhos')
 
-      .get()
-      .then(response => {
-        handleLoading(false)
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as VinhosProps[];
-        setVinhos(data)
-      });
-  }, []);
 
   return (
     <Container>
@@ -62,6 +46,7 @@ export function Vinhos({ handleLoading }: LoadingProps) {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <Card
+              id={item.id}
               key={item.id}
               imagem={item.imagem}
               titulo={item.titulo}

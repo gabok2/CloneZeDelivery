@@ -1,6 +1,5 @@
 import { Container, ContainerFlatlist, Titulo } from "./styles";
-import { useState, useEffect } from "react";
-import firestore from '@react-native-firebase/firestore';
+
 import { FlatList } from "react-native";
 import { Card } from "../../../../components/Card";
 import { useNavigation } from "@react-navigation/native";
@@ -12,13 +11,11 @@ interface ComidinhasProps {
   preço: number;
 }
 
-interface LoadingProps {
-
-  handleLoading: (isLoading: boolean) => void;
+interface DateProps {
+  comidinhas: ComidinhasProps[];
 }
 
-export function Comidinhas({ handleLoading }: LoadingProps) {
-  const [comidinhas, setComidinhas] = useState<ComidinhasProps[]>([]);
+export function Comidinhas({ comidinhas }: DateProps) {
 
   const navigation = useNavigation();
 
@@ -32,21 +29,7 @@ export function Comidinhas({ handleLoading }: LoadingProps) {
     })
   }
 
-  useEffect(() => {
-    firestore()
-      .collection('comidinhas')
-      .get()
-      .then(response => {
-        handleLoading(false)
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as ComidinhasProps[];
-        setComidinhas(data)
-      });
-  }, []);
+
 
   return (
     <Container>
@@ -59,11 +42,12 @@ export function Comidinhas({ handleLoading }: LoadingProps) {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <Card
+              id={item.id}
               key={item.id}
               imagem={item.imagem}
-              preço={item.preço}
               titulo={item.titulo}
               button={() => handleNavigateToDetalhes(item)}
+              preço={item.preço}
             />
           )}
           horizontal

@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+
 import { Container, ContainerFlatlist, Titulo } from "./styles";
-import firestore from '@react-native-firebase/firestore';
+
 import { FlatList } from "react-native";
 import { Card } from "../../../../components/Card";
 import { useNavigation } from "@react-navigation/native";
@@ -12,12 +12,13 @@ interface Retornavel {
   titulo: string;
   preço: number;
 }
-interface LoadingProps {
 
-  handleLoading: (isLoading: boolean) => void;
+interface DateProps {
+  retornavel: Retornavel[];
 }
-export function Retornavel({ handleLoading }: LoadingProps) {
-  const [retornavel, setRetornavel] = useState<Retornavel[]>([]);
+
+export function Retornavel({ retornavel }: DateProps) {
+
 
   const navigation = useNavigation();
 
@@ -33,22 +34,7 @@ export function Retornavel({ handleLoading }: LoadingProps) {
   }
 
 
-  useEffect(() => {
-    firestore()
-      .collection('retornavel')
 
-      .get()
-      .then(response => {
-        handleLoading(false)
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as Retornavel[];
-        setRetornavel(data)
-      });
-  }, []);
 
   return (
     <Container>
@@ -62,12 +48,12 @@ export function Retornavel({ handleLoading }: LoadingProps) {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <Card
+              id={item.id}
               key={item.id}
               imagem={item.imagem}
               titulo={item.titulo}
               button={() => handleNavigateToDetalhes(item)}
               preço={item.preço}
-
             />
           )}
           horizontal

@@ -13,8 +13,7 @@ import {
 
 } from "./styles";
 import { TouchableOpacity } from "react-native";
-import { useCart } from "../../hooks/useCart";
-import { Loading } from "../Loading";
+
 
 interface AddSacolaProps {
   quantidade: number;
@@ -23,7 +22,7 @@ interface AddSacolaProps {
 }
 
 export function AddSacola({ quantidade, handleQuantidade, handleRemoveQuantidade }: AddSacolaProps) {
-  const { loading } = useCart()
+
 
 
   return (

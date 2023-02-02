@@ -1,10 +1,9 @@
 import { Container, ContainerFlatlist, Titulo } from "./styles";
-import { useState, useEffect } from "react";
-import firestore from '@react-native-firebase/firestore';
+
 import { FlatList } from "react-native";
 import { Card } from "../../../../components/Card";
 import { useNavigation } from "@react-navigation/native";
-import { useCart } from "../../../../hooks/useCart";
+
 
 interface Não_AlcoòlicosProps {
   id: string;
@@ -15,42 +14,28 @@ interface Não_AlcoòlicosProps {
 
 }
 
-interface LoadingProps {
-
-  handleLoading: (isLoading: boolean) => void;
+interface DateProps {
+  não_alcoólicos: Não_AlcoòlicosProps[];
 }
-export function Não_Alcoòlicos({ handleLoading }: LoadingProps) {
-  const [não_alcoòlicos, setNão_Alcoòlicos] = useState<Não_AlcoòlicosProps[]>([]);
+
+
+export function Não_Alcoòlicos({ não_alcoólicos }: DateProps) {
+
 
 
   const navigation = useNavigation();
 
-  function handleNavigateToDetalhes(não_alcoòlicos: Não_AlcoòlicosProps) {
+  function handleNavigateToDetalhes(não_alcoòlico: Não_AlcoòlicosProps) {
 
     navigation.navigate('Detalhes', {
-      id: não_alcoòlicos.id,
-      imagem: não_alcoòlicos.imagem,
-      preço: não_alcoòlicos.preço,
-      titulo: não_alcoòlicos.titulo,
+      id: não_alcoòlico.id,
+      imagem: não_alcoòlico.imagem,
+      preço: não_alcoòlico.preço,
+      titulo: não_alcoòlico.titulo,
     })
   }
 
-  useEffect(() => {
-    firestore()
-      .collection('Não_Alcoòlicos')
 
-      .get()
-      .then(response => {
-        handleLoading(false)
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as Não_AlcoòlicosProps[];
-        setNão_Alcoòlicos(data)
-      });
-  }, []);
 
   return (
     <Container>
@@ -58,17 +43,16 @@ export function Não_Alcoòlicos({ handleLoading }: LoadingProps) {
         <Titulo>NÂO ALCOÒLICOS</Titulo>
 
         <FlatList
-          data={não_alcoòlicos}
+          data={não_alcoólicos}
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <Card
+              id={item.id}
               key={item.id}
-
               imagem={item.imagem}
               titulo={item.titulo}
               button={() => handleNavigateToDetalhes(item)}
-
               preço={item.preço}
             />
           )}

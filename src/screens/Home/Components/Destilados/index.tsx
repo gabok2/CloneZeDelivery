@@ -1,6 +1,5 @@
 import { Container, ContainerFlatlist, Titulo } from "./styles";
-import { useState, useEffect } from "react";
-import firestore from '@react-native-firebase/firestore';
+
 import { FlatList } from "react-native";
 import { Card } from "../../../../components/Card";
 import { useNavigation } from "@react-navigation/native";
@@ -12,13 +11,13 @@ interface DestiladosProps {
   preço: number;
 }
 
-interface LoadingProps {
-
-  handleLoading: (isLoading: boolean) => void;
+interface DateProps {
+  destilados: DestiladosProps[];
 }
 
-export function Destilados({ handleLoading }: LoadingProps) {
-  const [destilados, setDestilados] = useState<DestiladosProps[]>([]);
+
+export function Destilados({ destilados }: DateProps) {
+
 
   const navigation = useNavigation();
 
@@ -32,22 +31,7 @@ export function Destilados({ handleLoading }: LoadingProps) {
     })
   }
 
-  useEffect(() => {
-    firestore()
-      .collection('destilados')
 
-      .get()
-      .then(response => {
-        handleLoading(false)
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as DestiladosProps[];
-        setDestilados(data)
-      });
-  }, []);
   return (
     <Container>
       <ContainerFlatlist>
@@ -59,6 +43,7 @@ export function Destilados({ handleLoading }: LoadingProps) {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <Card
+              id={item.id}
               key={item.id}
               imagem={item.imagem}
               titulo={item.titulo}

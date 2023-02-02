@@ -4,7 +4,7 @@ import { Container, Titulo, Preço } from "./styles";
 interface ButtonProps {
   preço?: number;
   titulo: string;
-  onPress: () => void;
+  onPress?: () => void;
   quantidade?: number;
 }
 export function Button({ preço, titulo, onPress, quantidade }: ButtonProps) {
